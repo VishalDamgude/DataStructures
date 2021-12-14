@@ -149,10 +149,11 @@ TreeNode* Delete(TreeNode* root, int key)
             return root;
         } else {
             //TODO: Node to be deleted has at least one child (left/right).
-            /*This node needs to replaced by one of the nodes from left/right subtrees.
+            /* This node needs to replaced by one of the nodes from left/right subtrees.
             Check height of its left and right subtrees.
             If Height(LeftSubtree) > Height(RightSubtree), pick replacement node from left subtree. i.e. select inorder predecessor.
             else select inorder successor.
+            This approach will handle a case where one subtree is null and other subtree has height>0.
             */
            if(Height(root->leftChild) > Height(root->rightChild))
            {

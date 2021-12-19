@@ -78,10 +78,9 @@ TreeNode* Search(TreeNode* tNode, int key)
     return tNode;
 }
 
+//Time complexity: O(log n)
 TreeNode* SearchRescurse(TreeNode* tNode, int key)
 {
-    //if(tNode == nullptr)
-    //    return nullptr;
     if(tNode == nullptr || key == tNode->data)
         return tNode;
     if(key<tNode->data)
@@ -134,6 +133,7 @@ TreeNode* InorderSuccessor(TreeNode *tNode)
     return tmp;
 }
 
+//Time Complexity: O(log n)
 TreeNode* Delete(TreeNode* root, int key)
 {
     if(root == nullptr)
@@ -232,5 +232,6 @@ int main(){
     Delete(root,50);
     cout << "After deleting Node 50 (root Node), Height = "<< Height(root) << endl;
     Inorder(root);
+
     return 0;
 }

@@ -2,7 +2,7 @@
 #include<vector>
 using namespace std;
 
-int findPeakElement(vector<int>& nums)
+int findPeakElementInMountainArray(vector<int>& nums)
 {
     int start = 0;
     int end = nums.size()-1;
@@ -54,10 +54,43 @@ int binarySearch(vector<int> & nums, int target, int start, int end)
     }
     return -1;
 }
+
+//Binary Search in a rotated sorted array.Return index of target element, return -1 if not found.
+//e.g. A= {5,6,7,8,9,1,2,3}
+int RotatedBinarySearch(vector<int> &nums, int target, int start, int end)
+{
+    if(start > end)
+        return -1;
+    int mid = start + (end-start)/2;
+    if(nums[mid] == target)
+        return mid;
+
+    //Check if first half upto mid is sorted 
+    if(nums[start] <= nums[mid])
+    {
+        //first half is sorted, check if target lies in this half
+        if(target >= nums[start] && target <= nums[mid])
+        {
+            return RotatedBinarySearch(nums, target, start, mid-1);
+        }
+        //else search in second half.
+        return RotatedBinarySearch(nums, target, mid+1, end);
+    }
+    //First half is not sorted, then second half must be sorted.
+    //Check if target lies in second half.
+    if(target >= nums[mid] && target <= nums[end])
+    {
+        return RotatedBinarySearch(nums, target, mid+1, end);
+    }
+    //else search in first half.
+    return RotatedBinarySearch(nums, target, start, mid-1);
+}
 int main(){
 
     vector<int> nums {2,4,5,6,7,8,9,10};
     binarySearch(nums, 9, 0,nums.size()-1);
+    vector<int> rotatedArray = {5,6,7,8,9,1,2,3};
+    cout << RotatedBinarySearch(rotatedArray, 2, 0, rotatedArray.size() -1) << endl;
 
     return 0;
 }

@@ -28,7 +28,7 @@ int Partition(vector<int> &v, int start, int end)
             swap(v[i], v[j]);   //swap smaller and greater element at j and i respectively.
     }
     swap(v[start], v[j]);   //swap pivot with element at j to place pivot at its correct sorted position when i equals or exceeds j.
-    //Display(v);
+    Display(v);
     return j;
 }
 
@@ -44,7 +44,8 @@ void QuickSort(vector<int> &v, int start, int end)
 
 int main()
 {
-    vector<int> v {8,3,1,7,23,9,5,76,17};
+    //vector<int> v {8,3,1,7,23,9,5,76,17};
+    vector<int> v {8,7,6,5,4,3};
     //int partitionIndex = Partition(v, 0, v.size()-1);
     QuickSort(v, 0, v.size()-1);
     Display(v);

@@ -1,5 +1,6 @@
 #include<iostream>
 #include<vector>
+#include<math.h>
 
 using namespace std;
 
@@ -34,9 +35,9 @@ int getMax(vector<int> &v)
     return max;
 }
 
-void Insert(Node **buckets, int index)
+void Insert(Node **buckets, int index, int data)
 {
-    Node * p = new Node(index);
+    Node * p = new Node(data);
 
     if(buckets[index] == nullptr)
         buckets[index] = p;
@@ -58,41 +59,62 @@ int Delete(Node ** buckets, int index)
     return data;
 }
 
-//BucketSort: or Bin Sort, will work on any user defined data types.
-void BucketSort(vector<int> &v)
+int getDigits(int n)
+{
+    if(n==0) return 1;
+    int noOfDigits = 0;
+    while(n!=0)
+    {
+        n=n/10;
+        noOfDigits++;
+    }
+    return noOfDigits;
+}
+void RadixSort(vector<int> &v)
 {
     int max = getMax(v);
+    int max_digits= getDigits(max);
     int n = v.size();
-    Node** buckets = new Node*[max+1];
+    int bucketSize = 10;
 
-    for(int i=0; i<max+1; i++)
+    //Create buckets array of size 10 i.e 0 to 9 for base 10 radix sort.
+    Node** buckets = new Node*[bucketSize];
+
+    for(int i=0; i<bucketSize; i++)
     {
         buckets[i] = nullptr;
     }
-    for(int i=0; i<n; i++)
+    int radix =0;
+    while(radix < max_digits)
     {
-        //Element v[i] will act as index/position in buckets array.
-        Insert(buckets, v[i]);
-    }
-
-    int i=0, j=0;
-    while(i < max+1)
-    {
-        while(buckets[i] != nullptr)
+        for(int i=0; i<n; i++)
         {
-            //Return element from linked list at index i and delete it from bucket i.
-            v[j++] = Delete(buckets, i);
+            int pos = (int)(v[i]/pow(10,radix)) % 10;
+            Insert(buckets, pos, v[i]);
         }
-        i++;
+
+        int i=0, j=0;
+        while(i < bucketSize)
+        {
+            while(buckets[i] != nullptr)
+            {
+                //Return element from linked list at index i and delete it from bucket i.
+                v[j++] = Delete(buckets, i);
+            }
+            i++;
+        }
+        radix++;
+
     }
+    
     delete [] buckets;
 }
 
 int main()
 {
-    vector<int> v {8,3,1,7,23,9,5,76,17};
+    vector<int> v {878,453,51,277,123,99,455,876,217};
     //vector<int> v {8,7,6,5,4,3};
-    BucketSort(v);
+    RadixSort(v);
     Display(v);
     return 0;
 }

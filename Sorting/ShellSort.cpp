@@ -12,6 +12,7 @@ void Display(vector<int> &v)
     cout << endl;
 }
 
+//Similar to insertion sort but elemets that are 'gap' distance apart are inserted into sorted positons in each pass until gap is 1.
 void ShellSort(vector<int> &v)
 {
     int n = v.size();

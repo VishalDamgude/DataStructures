@@ -32,6 +32,31 @@ void CreateMaxHeap(vector<int> &v){
     }
 }
 
+void Heapify(vector<int> &v)
+{
+    //start heapify from end of list.
+    int n = v.size();
+    int i = n - 1;
+    while(i>=0)
+    {
+        int parent = i;
+        int leftChild = parent*2 + 1;
+        while(leftChild < n-1)
+        {
+            int rightChild = leftChild + 1;
+            int maxChildIndex = v[leftChild] > v[rightChild] ? leftChild : rightChild;
+            if(v[parent] < v[maxChildIndex])
+            {
+                swap(v[parent], v[maxChildIndex]);
+                parent = maxChildIndex;
+                leftChild = 2*parent+1;
+            }
+            else
+                break; //parent is at proper position.
+        }
+        i--;
+    }
+}
 //Deletes root of max-heap and returns it.
 int DeleteMaxHeap(vector<int> &v, int &arraySize)
 {
@@ -69,9 +94,11 @@ void HeapSort(vector<int> &v)
 int main()
 {
     vector<int> v {8,3,1,7,23,9,5,76,17};
+    //vector<int> v {10,35,20,5,40,15,25};
     //vector<int> v {8,2,9,6,5,3,7,3,1};
     //CreateMaxHeap(v);
-    HeapSort(v);
+    //HeapSort(v);
+    Heapify(v);
     Display(v);
     return 0;
 }

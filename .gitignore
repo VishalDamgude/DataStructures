@@ -1,5 +1,6 @@
 *.json
 *.exe
+*.txt
 helloworld/*
 Recursion/*
 resources/*

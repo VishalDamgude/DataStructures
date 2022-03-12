@@ -62,6 +62,20 @@ void BFS(int A[][6], int startVertex)
     cout << endl;
 }
 
+void DFS(int A[][6], int startVertex, int n)
+{
+    static int visited[6] = {0};
+    cout << startVertex << " ";
+    visited[startVertex] = 1;
+    for(int neighbor=0; neighbor<n; neighbor++)
+    {
+        if(A[startVertex][neighbor] == 1 && visited[neighbor] == 0)
+        {
+            DFS(A, neighbor, n);
+        }
+    }
+}
+
 int main()
 {
     //Adjacency matrix
@@ -71,7 +85,32 @@ int main()
                     {0,1,1,0,1,1},
                     {0,0,0,1,0,0},
                     {0,0,0,0,0,1}
-    };       
+    };
+    int n, m;
+    cin >> n >> m;
+    int adj[n+1][n+1];
+    for(int i=0; i<m; i++)
+    {
+        int u,v;
+        cin >> u >> v;
+        adj[u][v] = 1;
+        adj[v][u] = 1;
+    }
+
+    for(int i=1; i<=n; i++)
+    {
+        cout << "vertex " << i << " Edges: ";
+        for(int j=1; j<=n; j++)
+        {
+            if(adj[i][j] == 1)
+            {
+                cout << j << " ";
+            }
+        }
+        cout << endl;
+    }
     BFS(A, 2);
+    DFS(A, 4, 6);
+    cout << endl;
     return 0;
 }

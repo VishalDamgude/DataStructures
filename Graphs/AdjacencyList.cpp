@@ -1,92 +1,117 @@
-#include<iostream>
-#include "../Queue/Queue.h"
+#include <iostream>
+#include <queue>
 #include <vector>
 using namespace std;
 
 /*
 
     Graph used in this file:
-            0
+            1
            / \
           /   \
          /     \
-        1       2
+        2       3
         \      /
          \    /
           \  /
-           3
+           4
           / \
          /   \
         /     \
-       4       5
+       5       6
 */
 
-//Breadth First Search
-void BFS(int A[][6], int startVertex)
+// Breadth First Search
+// Time Complexity: O(V+E)
+void BFS(vector<int> adj[], int n)
 {
-    int n = sizeof(A[0])/sizeof(A[0][0]);
-    Queue q(n);
-    int visited[n] = {0};
-    //visit first node and add to queue.
-    cout << startVertex << " ";
-    q.Enqueue(startVertex);
-    visited[startVertex] = 1;    
-
-    while(!q.IsEmpty())
+    queue<int> q;
+    int visited[n+1] = {0};
+    int startVertex = 0;
+    cout << "BFS Traversal" << endl;
+    // To traverse all components of graph loop over all vertices.
+    for (int i = 1; i <= n; i++)
     {
-        int currentVertex = q.Dequeue();
-        for(int neighbor=0; neighbor<n; neighbor++)
+        if (visited[i] != 1)
         {
-            //If edge between current vertex and neighbor node and its not visited yet.
-            if(A[currentVertex][neighbor] == 1 && visited[neighbor] == 0)
+            startVertex = i;
+            visited[i] = 1;
+            q.push(i);
+            // Do BFS starting with i'th vertex.
+            while (!q.empty())
             {
-                cout << neighbor << " ";
-                visited[neighbor] = 1;
-                q.Enqueue(neighbor);
+                int currentVertex = q.front();
+                q.pop();
+                cout << currentVertex << " ";
+                for (int neighbor : adj[currentVertex])
+                {
+                    if (visited[neighbor] != 1)
+                    {
+                        visited[neighbor] = 1;
+                        q.push(neighbor);
+                    }
+                }
             }
+        }
+    }
+
+    cout << endl;
+}
+
+void DFSHelper(int currentNode, vector<int>& visited, vector<int> adj[])
+{
+    cout << currentNode << " ";
+    visited[currentNode] = 1;
+    for(int neighbor : adj[currentNode])
+    {
+        if(visited[neighbor] != 1)
+            DFSHelper(neighbor, visited, adj);
+    }
+}
+void DFS(vector<int> adj[], int n)
+{
+    cout << "DFS Traversal: " << endl;
+    vector<int> visited(n+1, 0);
+    for(int i=1; i<=n; i++)
+    {
+        if(visited[i] != 1)
+        {
+            DFSHelper(i, visited, adj);
         }
     }
     cout << endl;
 }
 
-void DFS(int A[][6], int startVertex, int n)
+void Display(vector<int> adj[], int n)
 {
-    static int visited[6] = {0};
-    cout << startVertex << " ";
-    visited[startVertex] = 1;
-    for(int neighbor=0; neighbor<n; neighbor++)
-    {
-        if(A[startVertex][neighbor] == 1 && visited[neighbor] == 0)
-        {
-            DFS(A, neighbor, n);
-        }
-    }
-}
-
-int main()
-{
-    int n, m;
-    cin >> n >> m;
-    vector<int> adj[n+1];
-    for(int i=0; i<m; i++)
-    {
-        int u,v;
-        cin >> u >> v;
-        adj[u].push_back(v);
-        adj[v].push_back(u);
-    }
-
-    for(int i=1; i<=n; i++)
+    for (int i = 1; i <= n; i++)
     {
         cout << "vertex " << i << " Edges: ";
-        for(int j=0; j<adj[i].size(); j++)
+        for (int j = 0; j < adj[i].size(); j++)
         {
             cout << adj[i][j] << " ";
         }
         cout << endl;
     }
-    //BFS(A, 2);
-    //DFS(A, 4, 6);
-    cout << endl;
+}
+
+int main()
+{
+    // int n, m;
+    // cin >> n >> m;
+    // vector<int> adj[n + 1];
+    // for (int i = 0; i < m; i++)
+    // {
+    //     int u, v;
+    //     cin >> u >> v;
+    //     adj[u].push_back(v);
+    //     adj[v].push_back(u);
+    // }
+
+    int n = 11;
+    vector<int> adj[n + 1] = {{}, {2}, {1, 4}, {5}, {2}, {3,6,10}, {5,7}, {6,8}, {7,9, 11},{8,10}, {5,9},{8}};
+    Display(adj, n);
+    BFS(adj, n);
+    DFS(adj, n);
     return 0;
 }
